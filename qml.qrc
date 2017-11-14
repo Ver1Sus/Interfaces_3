@@ -6,5 +6,6 @@
         <file>js.js</file>
         <file>forms.qml</file>
         <file>btn_play.png</file>
+        <file>cookies.cks</file>
     </qresource>
 </RCC>

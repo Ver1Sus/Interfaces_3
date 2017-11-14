@@ -1,5 +1,7 @@
 import QtQuick 2.0
 import QtMultimedia 5.6
+import QtWebView 1.1
+
 import "js.js" as JScript
 
 Item {
@@ -8,11 +10,12 @@ Item {
         x:0; y:0
         width: parent.width
         height: parent.height
-    Rectangle{
-     anchors.fill: parent
-     color:"#587B8E"
-     z:0
-    }
+
+        Rectangle{
+         anchors.fill: parent
+         color:"#587B8E"
+         z:0
+        }
 
         //---------------- Для отображения фаворитов
         Rectangle{
@@ -51,7 +54,6 @@ Item {
             delegate:
                 Loader{
                     id: loaderId
-                    x:400; y:0
                     property int  favorWidth: listViewItem.height*0.03
                     property int  favorHeight: listViewItem.height*0.03
                     property string jsonValue: modelData.value
@@ -61,7 +63,7 @@ Item {
                     property string jsonFavor: modelData.favor
 
                     width: listViewItem.width
-                    height: listViewItem.height*0.9
+                    height: listViewItem.height*0.85
 
 
 
@@ -180,6 +182,7 @@ Item {
                                 id: webDelegate_favor
                                 anchors.right: parent.right
                                 anchors.top: parent.top
+                                z: 6
                                 color:
                                     if(jsonFavor == "1") return "yellow"
                                     else return "white"
@@ -198,19 +201,19 @@ Item {
                                 }
                             }
                             Text {
-                                text: qsTr("WEB: "+modelData.title+"\n"+modelData.value)
+                                text: qsTr(modelData.title+": "+modelData.value)
                             }
-
-
-     //                            WebView {
-     //                                id: webView
-     //                                anchors.fill: parent
-     //                                url: modelData.value
-     //                                onLoadingChanged: {
-     //                                    if (loadRequest.errorString)
-     //                                        console.error(loadRequest.errorString);
-     //                                }
-     //                            }
+                             WebView {
+                                 id: webView
+                                 z: 5; y: webDelegate_favor.height
+                                 width:parent.width
+                                 height: parent.height - webDelegate_favor.height
+                                 url: modelData.value
+                                 onLoadingChanged: {
+                                     if (loadRequest.errorString)
+                                         console.error(loadRequest.errorString);
+                                 }
+                             }
                         }
                     }
 
@@ -402,7 +405,29 @@ Item {
 
 
 
+    Rectangle{
+        id: logOut
+        color:"black"
+        width: parent.width*0.2
+        height: parent.height*0.10
+        anchors.bottom: view.bottom
 
+        Text {
+            anchors.fill: parent
+            color: "white"
+            text: qsTr("LogOut")
+            font.pointSize: 11
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+        }
+
+        MouseArea{
+            anchors.fill: parent
+            onDoubleClicked: {
+                JScript.logout()
+            }
+        }
+    }
 
 
 
