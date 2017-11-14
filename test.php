@@ -1,7 +1,7 @@
 <?php
 
 
-$mysql = new mysqli('localhost','root','1234','study');
+$mysql = new mysqli('localhost','***','***','study');
 
 if(isset($_POST['test'])){
 
